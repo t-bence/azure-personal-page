@@ -1,0 +1,26 @@
+# source: https://github.com/marketplace/actions/azure-cli-action
+
+on:
+  push:
+    branches:
+      - main
+
+name: Deploy to Azure storage
+
+jobs:
+
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Check out
+      uses: actions/checkout@v4
+
+    - name: Upload files # https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blob-static-website-how-to?tabs=azure-cli#upload-files
+      uses: azure/cli@v2
+      env:
+        AZURE_STORAGE_SAS_TOKEN: ${{secrets.AZURE_STORAGE_SAS_TOKEN}}
+      with:
+        azcliversion: latest
+        inlineScript: |
+          az storage blob upload-batch -s . --pattern "*.html" --overwrite -d '$web' --account-name ${{secrets.STORAGE_ACCOUNT_NAME}}
