@@ -52,6 +52,22 @@
             margin: 0;
         }
     </style>
+    <script>
+        fetch('http://dummyjson.com/c/b59f-92d3-455b-8b37')
+        .then(response => {
+            if (!response.ok) {
+            throw new Error(`Network response was not ok: ${response.statusText}`);
+            }
+            return response.json(); // parse JSON if response is in JSON format
+        })
+        .then(data => {
+            console.log(data); // handle the JSON data here
+            document.getElementById('visitors').innerText = data.visitors;
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+    </script>
 </head>
 <body>
     <div class="resume-container">
@@ -114,6 +130,7 @@
                 <li><a href="https://credentials.databricks.com/profile/bencemihlydrtth638781/wallet">Databricks credentials wallet</a></li>
             </ul>
         </div>
+        <div class="section">Number of visitors: <span id="visitors"></span></div>
     </div>
 </body>
 </html>
